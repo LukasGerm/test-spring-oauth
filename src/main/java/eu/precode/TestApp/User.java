@@ -19,7 +19,7 @@ public class User {
     private String username;
     @Column
     private String password;
-    @ElementCollection
-    private List<SimpleGrantedAuthority> roles = new ArrayList<>();
+    @Column
+    private String roles;
 }
 

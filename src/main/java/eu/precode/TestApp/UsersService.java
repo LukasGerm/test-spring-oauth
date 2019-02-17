@@ -28,9 +28,15 @@ public class UsersService implements UserDetailsService {
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password");
         }
-        //Todo: Authority should be stored in database
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),user.getRoles());
+        //Create a new list
+        List<SimpleGrantedAuthority> roles = new ArrayList<>();
+        //Because the roles are stored as a concatenated string, they should get split by ",".
+        String[] roleParts = user.getRoles().split(",");
+        //For every found role, it gets add to the list
+        for(String role : roleParts){
+            roles.add(new SimpleGrantedAuthority(role));
+        }
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),roles);
     }
     public Page<User> getUsers(Pageable pageable){
         return repo.findAll(pageable);
