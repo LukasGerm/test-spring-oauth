@@ -2,11 +2,11 @@ package eu.precode.TestApp;
 
 
 import lombok.Data;
-
-import javax.persistence.Id;
-
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,5 +19,7 @@ public class User {
     private String username;
     @Column
     private String password;
+    @ElementCollection
+    private List<SimpleGrantedAuthority> roles = new ArrayList<>();
 }
 

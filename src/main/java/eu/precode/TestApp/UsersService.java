@@ -10,7 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 @Service(value = "userService")
 public class UsersService implements UserDetailsService {
 
@@ -26,7 +29,8 @@ public class UsersService implements UserDetailsService {
             throw new UsernameNotFoundException("Invalid username or password");
         }
         //Todo: Authority should be stored in database
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),user.getRoles());
     }
     public Page<User> getUsers(Pageable pageable){
         return repo.findAll(pageable);
