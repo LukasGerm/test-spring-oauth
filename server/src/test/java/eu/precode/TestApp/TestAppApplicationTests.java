@@ -1,5 +1,6 @@
 package eu.precode.TestApp;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -30,9 +31,12 @@ public class TestAppApplicationTests {
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);
 
+        Object oauthRequest = new OauthRequest("Lukas", "test123", "password");
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic "+ base64Creds);
-		HttpEntity<OauthRequest> reqData = new HttpEntity<>(new OauthRequest("Lukas", "test123", "password"), headers);
+		HttpEntity<Object> reqData = new HttpEntity<>(oauthRequest, headers);
+
 		ResponseEntity<Object> entity  = restTemplate.exchange("http://localhost:8080/oauth/token", HttpMethod.POST,
                 reqData,
                 Object.class);
