@@ -1,44 +1,53 @@
 package eu.precode.TestApp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
+import org.springframework.web.client.RestTemplate;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@ContextConfiguration(classes = TestAppApplication.class)
 @WebMvcTest
 public class TestAppApplicationTests {
+    @Value("${local.server.port}")
+    private int port;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
 
 
-	public static String asJsonString(final Object obj) {
-		try {
-			final ObjectMapper mapper = new ObjectMapper();
-			final String jsonContent = mapper.writeValueAsString(obj);
-			return jsonContent;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+	/*@Test
+	public void testOauthToken(){
+		OauthRequest reqData = new OauthRequest("Lukas", "test123", "password");
+		HttpEntity<OauthRequest> req = new HttpEntity<>(reqData);
+		ResponseEntity<Object> entity = this.restTemplate.postForEntity("http://localhost:8080/oauth/token", req, OauthRequest.class);
 
-	@Autowired
-	private MockMvc mockMvc;
 
-	@Test
-	public void checkOauthGetToken() throws Exception{
-		User user = new User("Lukas", "test123", "ROLE_ADMIN");
-		this.mockMvc.perform(
-				MockMvcRequestBuilders.post("/oauth/token").content(asJsonString(user)).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-		);
-	}
+
+		Assert.assertEquals(200, entity.getStatusCodeValue());
+
+	}*/
+
+    @Test
+    public void googleTest() {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<String> result = restTemplate.getForEntity("https://www.google.com", String.class);
+
+        System.out.println(result.getBody());
+
+    }
 
 
 }
