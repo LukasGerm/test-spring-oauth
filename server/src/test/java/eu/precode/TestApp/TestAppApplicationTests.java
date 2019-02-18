@@ -1,44 +1,43 @@
 package eu.precode.TestApp;
 
-import eu.precode.TestApp.*;
+import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.Charset;
 
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = TestAppApplication.class)
-@WebMvcTest
+
+@SpringBootTest
 public class TestAppApplicationTests {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private RestTemplate restTemplate = new RestTemplate();
 
 
-	/*@Test
+	@Test
 	public void testOauthToken(){
-		OauthRequest reqData = new OauthRequest("Lukas", "test123", "password");
-		HttpEntity<OauthRequest> req = new HttpEntity<>(reqData);
-		ResponseEntity<Object> entity = this.restTemplate.postForEntity("http://localhost:8080/oauth/token", req, OauthRequest.class);
 
+        String plainCreds = "client:topsecret";
+        byte[] plainCredsBytes = plainCreds.getBytes();
+        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+        String base64Creds = new String(base64CredsBytes);
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic "+ base64Creds);
+		HttpEntity<OauthRequest> reqData = new HttpEntity<>(new OauthRequest("Lukas", "test123", "password"), headers);
+		ResponseEntity<Object> entity  = restTemplate.exchange("http://localhost:8080/oauth/token", HttpMethod.POST,
+                reqData,
+                Object.class);
 
-		Assert.assertEquals(200, entity.getStatusCodeValue());
-
-	}*/
-
-    @Test
-    public void googleTest() {
-    }
+	}
 
 
 }
