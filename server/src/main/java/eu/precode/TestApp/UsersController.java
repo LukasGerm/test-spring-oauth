@@ -7,12 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 @RestController
 public class UsersController {
-    UsersService service;
-
     @Autowired
-    UsersController(UsersService service) {
-        this.service = service;
-    }
+    UsersService service;
 
     @GetMapping("/users")
     public Page<User> getUsers(Pageable pageable) {

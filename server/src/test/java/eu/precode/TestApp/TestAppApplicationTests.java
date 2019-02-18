@@ -1,6 +1,6 @@
 package eu.precode.TestApp;
 
-import org.junit.Assert;
+import eu.precode.TestApp.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,6 @@ import org.springframework.web.client.RestTemplate;
 @ContextConfiguration(classes = TestAppApplication.class)
 @WebMvcTest
 public class TestAppApplicationTests {
-    @Value("${local.server.port}")
-    private int port;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -40,13 +38,6 @@ public class TestAppApplicationTests {
 
     @Test
     public void googleTest() {
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<String> result = restTemplate.getForEntity("https://www.google.com", String.class);
-
-        System.out.println(result.getBody());
-
     }
 
 
