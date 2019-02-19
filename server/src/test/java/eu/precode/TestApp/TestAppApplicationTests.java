@@ -1,18 +1,19 @@
 package eu.precode.TestApp;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.codec.binary.Base64;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
-import org.junit.Assert;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SpringBootTest
@@ -29,23 +30,21 @@ public class TestAppApplicationTests {
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);
 
-        ObjectMapper mapper = new ObjectMapper();
+        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 
+        formparams.add(new BasicNameValuePair("username", "Lukas"));
+        formparams.add(new BasicNameValuePair("password","test123"));
+        formparams.add(new BasicNameValuePair("grant_type", "password"));
+        UrlEncodedFormEntity entity2 = new UrlEncodedFormEntity(formparams, StandardCharsets.UTF_8);
 
-        OauthRequest oauthRequest = new OauthRequest("Lukas", "test123", "password");
-        String json;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("Authorization", "Basic " + base64Creds);
+        HttpEntity<Object> reqData = new HttpEntity<>(entity2, headers);
 
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            headers.add("Authorization", "Basic " + base64Creds);
-            HttpEntity<Object> reqData = new HttpEntity<>(oauthRequest, headers);
-
-            ResponseEntity<Object> entity = restTemplate.exchange("http://localhost:8080/oauth/token", HttpMethod.POST,
-                    reqData,
-                    Object.class);
-
-
+        ResponseEntity<Object> entity = restTemplate.exchange("http://localhost:8080/oauth/token", HttpMethod.POST,
+                reqData,
+                Object.class);
 
 
     }
