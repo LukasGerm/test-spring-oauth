@@ -1,5 +1,7 @@
-package eu.precode.TestApp;
+package eu.precode.TestApp.controllers;
 
+import eu.precode.TestApp.services.UsersService;
+import eu.precode.TestApp.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;

@@ -37,7 +37,7 @@ public class TestAppApplicationTests {
 
         List<String[]> formData = new ArrayList();
 
-        formData.add(new String[]{"username", "Lukas"});
+        formData.add(new String[]{"username", "Lukas1"});
         formData.add(new String[]{"password", "test123"});
         formData.add(new String[]{"grant_type", "password"});
 

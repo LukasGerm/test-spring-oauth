@@ -1,5 +1,6 @@
-package eu.precode.TestApp;
+package eu.precode.TestApp.repo;
 
+import eu.precode.TestApp.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;

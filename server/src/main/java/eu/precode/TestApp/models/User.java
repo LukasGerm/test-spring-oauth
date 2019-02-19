@@ -1,4 +1,4 @@
-package eu.precode.TestApp;
+package eu.precode.TestApp.models;
 
 
 import lombok.Data;
@@ -20,6 +20,6 @@ public class User {
     @Column
     private String password;
     @Column
-    private String roles;
+    private int adminLevel;
 }
 

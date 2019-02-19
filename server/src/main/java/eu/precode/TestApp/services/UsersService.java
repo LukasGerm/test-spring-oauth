@@ -1,17 +1,17 @@
-package eu.precode.TestApp;
+package eu.precode.TestApp.services;
 
 
+import eu.precode.TestApp.models.User;
+import eu.precode.TestApp.models.Role;
+import eu.precode.TestApp.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,15 +34,9 @@ public class UsersService implements UserDetailsService {
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password");
         }
-        //Create a new list
-        List<SimpleGrantedAuthority> roles = new ArrayList<>();
-        //Because the roles are stored as a concatenated string, they should get split by ",".
-        String[] roleParts = user.getRoles().split(",");
-        //For every found role, it gets add to the list
-        for(String role : roleParts){
-            roles.add(new SimpleGrantedAuthority(role));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),roles);
+
+        Role role = new Role(user.getAdminLevel());
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), role.getRole()) ;
     }
     public Page<User> getUsers(Pageable pageable){
         return repo.findAll(pageable);
