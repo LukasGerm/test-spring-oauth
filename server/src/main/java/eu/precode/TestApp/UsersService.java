@@ -9,6 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ import java.util.List;
 
 @Service(value = "userService")
 public class UsersService implements UserDetailsService {
+
+    @Autowired
+    public PasswordEncoder encoder;
 
     public UserRepository repo;
     @Autowired
@@ -44,6 +49,10 @@ public class UsersService implements UserDetailsService {
     }
 
     public User create(User user){
+
+        String encryptedPassword = this.encoder.encode(user.getPassword());
+
+        user.setPassword(encryptedPassword);
         return repo.save(user);
     }
 }

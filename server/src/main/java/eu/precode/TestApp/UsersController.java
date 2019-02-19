@@ -20,4 +20,9 @@ public class UsersController {
         return service.create(user);
     }
 
+    @PostMapping("/addTestUser")
+    public User addTestUser(@RequestBody User user){
+        return service.create(user);
+    }
+
 }
